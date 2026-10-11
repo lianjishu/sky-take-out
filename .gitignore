@@ -31,3 +31,6 @@ yarn-error.log*
 # ---- 系统 ----
 Thumbs.db
 .DS_Store
+
+# ---- Agent ----
+.qoder-credits/
