@@ -34,6 +34,7 @@ Thumbs.db
 
 # ---- Agent ----
 .qoder-credits/
+.qoder/
 
 # ----- 配置 -----
 **/application-dev.yml

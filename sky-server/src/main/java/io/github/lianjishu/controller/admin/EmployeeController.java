@@ -1,6 +1,7 @@
 package io.github.lianjishu.controller.admin;
 
 import io.github.lianjishu.constant.JwtClaimsConstant;
+import io.github.lianjishu.dto.EmployeeDTO;
 import io.github.lianjishu.dto.EmployeeLoginDTO;
 import io.github.lianjishu.entity.Employee;
 import io.github.lianjishu.properties.JwtProperties;
@@ -37,8 +38,8 @@ public class EmployeeController {
     /**
      * 登录
      *
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO 登录参数
+     * @return 登录结果
      */
     @PostMapping("/login")
     @ApiOperation(value = "员工登录")
@@ -68,11 +69,26 @@ public class EmployeeController {
     /**
      * 退出
      *
-     * @return
+     * @return 统一结果
      */
     @PostMapping("/logout")
     @ApiOperation("员工退出")
     public Result<String> logout() {
+        return Result.success();
+    }
+
+    /**
+     * 新增员工
+     *
+     * @param employeeDTO 员工信息
+     * @return 统一结果
+     */
+    @PostMapping
+    @ApiOperation("新增员工")
+    public Result<EmployeeDTO> save(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("新增员工：{}", employeeDTO);
+        employeeService.save(employeeDTO);
+
         return Result.success();
     }
 

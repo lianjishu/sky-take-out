@@ -1,7 +1,10 @@
 package io.github.lianjishu.service.impl;
 
 import io.github.lianjishu.constant.MessageConstant;
+import io.github.lianjishu.constant.PasswordConstant;
 import io.github.lianjishu.constant.StatusConstant;
+import io.github.lianjishu.context.BaseContext;
+import io.github.lianjishu.dto.EmployeeDTO;
 import io.github.lianjishu.dto.EmployeeLoginDTO;
 import io.github.lianjishu.entity.Employee;
 import io.github.lianjishu.exception.AccountLockedException;
@@ -9,9 +12,12 @@ import io.github.lianjishu.exception.AccountNotFoundException;
 import io.github.lianjishu.exception.PasswordErrorException;
 import io.github.lianjishu.mapper.EmployeeMapper;
 import io.github.lianjishu.service.EmployeeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.time.LocalDateTime;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -22,8 +28,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 员工登录
      *
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO 员工登录数据传输对象
+     * @return 员工实体对象
      */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
@@ -53,6 +59,32 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         //3、返回实体对象
         return employee;
+    }
+
+    /**
+     * 新增员工
+     *
+     * @param employeeDTO 员工数据传输对象
+     */
+    @Override
+    public void save(EmployeeDTO employeeDTO) {
+        Employee employee = new Employee();
+
+        //属性拷贝 employeeDTO -> employee
+        BeanUtils.copyProperties(employeeDTO, employee);
+        //设置新员工的默认状态(启用)
+        employee.setStatus(StatusConstant.ENABLE);
+        //设置新员工的默认密码
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
+        //设置当前记录的创建时间和修改时间
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+        //设置当前记录的创建人ID和修改人ID
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employee.setCreateUser(BaseContext.getCurrentId());
+
+        //调用mapper
+        employeeMapper.insert(employee);
     }
 
 }
