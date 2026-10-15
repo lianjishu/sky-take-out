@@ -3,8 +3,10 @@ package io.github.lianjishu.controller.admin;
 import io.github.lianjishu.constant.JwtClaimsConstant;
 import io.github.lianjishu.dto.EmployeeDTO;
 import io.github.lianjishu.dto.EmployeeLoginDTO;
+import io.github.lianjishu.dto.EmployeePageQueryDTO;
 import io.github.lianjishu.entity.Employee;
 import io.github.lianjishu.properties.JwtProperties;
+import io.github.lianjishu.result.PageResult;
 import io.github.lianjishu.result.Result;
 import io.github.lianjishu.service.EmployeeService;
 import io.github.lianjishu.utils.JwtUtil;
@@ -13,10 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -92,4 +91,17 @@ public class EmployeeController {
         return Result.success();
     }
 
+    /**
+     * 员工分页查询
+     *
+     * @param employeePageQueryDTO 员工分页查询参数
+     * @return 员工分页查询结果
+     */
+    @GetMapping("/page")
+    @ApiOperation("员工分页查询")
+    public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
+        log.info("员工分页查询：{}", employeePageQueryDTO);
+        PageResult pageResult = employeeService.page(employeePageQueryDTO);
+        return Result.success(pageResult);
+    }
 }

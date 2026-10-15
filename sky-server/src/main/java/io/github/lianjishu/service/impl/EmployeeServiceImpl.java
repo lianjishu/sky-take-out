@@ -1,16 +1,20 @@
 package io.github.lianjishu.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import io.github.lianjishu.constant.MessageConstant;
 import io.github.lianjishu.constant.PasswordConstant;
 import io.github.lianjishu.constant.StatusConstant;
 import io.github.lianjishu.context.BaseContext;
 import io.github.lianjishu.dto.EmployeeDTO;
 import io.github.lianjishu.dto.EmployeeLoginDTO;
+import io.github.lianjishu.dto.EmployeePageQueryDTO;
 import io.github.lianjishu.entity.Employee;
 import io.github.lianjishu.exception.AccountLockedException;
 import io.github.lianjishu.exception.AccountNotFoundException;
 import io.github.lianjishu.exception.PasswordErrorException;
 import io.github.lianjishu.mapper.EmployeeMapper;
+import io.github.lianjishu.result.PageResult;
 import io.github.lianjishu.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -87,4 +92,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.insert(employee);
     }
 
+    /**
+     * 员工分页查询
+     *
+     * @param employeePageQueryDTO 员工分页查询参数
+     * @return 员工分页查询结果
+     */
+    @Override
+    public PageResult page(EmployeePageQueryDTO employeePageQueryDTO) {
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
+        List<Employee> records = employeeMapper.pageQuery(employeePageQueryDTO);
+        Page<Employee> p = (Page<Employee>) records;//Page是List的实现类
+
+        return new PageResult(p.getTotal(), p.getResult());
+    }
 }
