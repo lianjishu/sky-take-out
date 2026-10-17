@@ -17,7 +17,7 @@ public interface EmployeeMapper {
      * @param username 用户名
      * @return 员工对象
      */
-    @Select("select * from employee where username = #{username}")
+    @Select("select * from employee where username = #{username} limit 1")
     Employee getByUsername(String username);
 
     /**
@@ -37,8 +37,23 @@ public interface EmployeeMapper {
      * @param employeePageQueryDTO 员工分页查询条件
      * @return 员工分页列表
      */
+    List<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     * 根据id动态更新员工信息
+     *
+     * @param employee 员工对象
+     */
+    void update(Employee employee);
+
+    /**
+     * 根据id查询员工信息
+     *
+     * @param id 员工id
+     * @return 员工对象
+     */
     @Select("select id, name, username, password, phone, sex, id_number, status, create_time, update_time, create_user, update_user " +
             "from employee " +
-            "where name like CONCAT('%', #{name}, '%')")
-    List<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+            "where id = #{id}")
+    Employee selectById(Integer id);
 }

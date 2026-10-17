@@ -25,8 +25,32 @@ public interface EmployeeService {
 
     /**
      * 员工分页查询
+     *
      * @param employeePageQueryDTO 员工分页查询参数
      * @return 员工分页查询结果
      */
     PageResult page(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     * 启用、禁用员工账号
+     *
+     * @param id     员工ID
+     * @param status 状态
+     */
+    void startOrStop(Long id, Integer status);
+
+    /**
+     * 根据ID查询回显员工
+     *
+     * @param id 员工ID
+     * @return 员工数据传输对象
+     */
+    Employee getById(Integer id);
+
+    /**
+     * 修改员工信息
+     *
+     * @param employeeDTO 员工数据传输对象
+     */
+    void update(EmployeeDTO employeeDTO);
 }
