@@ -130,8 +130,9 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Employee getById(Integer id) {
-
-        return employeeMapper.selectById(id);
+        Employee employee =  employeeMapper.selectById(id);
+        employee.setPassword("***");
+        return employee;
     }
 
     /**
