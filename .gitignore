@@ -38,3 +38,6 @@ Thumbs.db
 
 # ----- 配置 -----
 **/application-dev.yml
+
+# ---- 非本仓库内容（本地课程练习，误放在项目目录内，不应入库）----
+javaee-ssm/
