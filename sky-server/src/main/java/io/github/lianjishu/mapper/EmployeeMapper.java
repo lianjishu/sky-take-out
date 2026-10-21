@@ -1,7 +1,9 @@
 package io.github.lianjishu.mapper;
 
+import io.github.lianjishu.annotation.AutoFill;
 import io.github.lianjishu.dto.EmployeePageQueryDTO;
 import io.github.lianjishu.entity.Employee;
+import io.github.lianjishu.enumeration.OperationType;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -29,6 +31,7 @@ public interface EmployeeMapper {
             "values" +
             "(null, #{name}, #{username},#{password},#{phone},#{sex},#{idNumber},#{status},#{createTime},#{updateTime},#{createUser},#{updateUser})"
     )
+    @AutoFill(value = OperationType.INSERT)
     void insert(Employee employee);
 
     /**
@@ -44,6 +47,7 @@ public interface EmployeeMapper {
      *
      * @param employee 员工对象
      */
+    @AutoFill(value = OperationType.UPDATE)
     void update(Employee employee);
 
     /**
