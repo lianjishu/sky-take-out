@@ -1,6 +1,7 @@
 package io.github.lianjishu.aspect;
 
 import io.github.lianjishu.annotation.AutoFill;
+import io.github.lianjishu.constant.AutoFillConstant;
 import io.github.lianjishu.context.BaseContext;
 import io.github.lianjishu.enumeration.OperationType;
 import lombok.extern.slf4j.Slf4j;
@@ -53,18 +54,18 @@ public class AutoFillAspect {
         if (operationType == OperationType.INSERT) { //插入操作
             try {
                 //为4个公共字段赋值
-                entity.getClass().getDeclaredMethod("setCreateTime", LocalDateTime.class).invoke(entity, now);
-                entity.getClass().getDeclaredMethod("setCreateUser", Long.class).invoke(entity, operatedUserId);
-                entity.getClass().getDeclaredMethod("setUpdateTime", LocalDateTime.class).invoke(entity, now);
-                entity.getClass().getDeclaredMethod("setUpdateUser", Long.class).invoke(entity, operatedUserId);
+                entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_TIME, LocalDateTime.class).invoke(entity, now);
+                entity.getClass().getDeclaredMethod(AutoFillConstant.SET_CREATE_USER, Long.class).invoke(entity, operatedUserId);
+                entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME, LocalDateTime.class).invoke(entity, now);
+                entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class).invoke(entity, operatedUserId);
             } catch (Exception e) {
                 log.error("反射赋值公共字段出错...", e);
             }
         } else if (operationType == OperationType.UPDATE) { //更新操作
             try {
                 //为2个公共字段赋值
-                entity.getClass().getDeclaredMethod("setUpdateTime", LocalDateTime.class).invoke(entity, now);
-                entity.getClass().getDeclaredMethod("setUpdateUser", Long.class).invoke(entity, operatedUserId);
+                entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_TIME, LocalDateTime.class).invoke(entity, now);
+                entity.getClass().getDeclaredMethod(AutoFillConstant.SET_UPDATE_USER, Long.class).invoke(entity, operatedUserId);
             } catch (Exception e) {
                 log.error("反射赋值公共字段出错...", e);
             }

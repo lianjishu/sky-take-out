@@ -2,12 +2,14 @@ package io.github.lianjishu.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import io.github.lianjishu.annotation.AutoFill;
 import io.github.lianjishu.constant.MessageConstant;
 import io.github.lianjishu.constant.StatusConstant;
 import io.github.lianjishu.context.BaseContext;
 import io.github.lianjishu.dto.CategoryDTO;
 import io.github.lianjishu.dto.CategoryPageQueryDTO;
 import io.github.lianjishu.entity.Category;
+import io.github.lianjishu.enumeration.OperationType;
 import io.github.lianjishu.exception.DeletionNotAllowedException;
 import io.github.lianjishu.mapper.CategoryMapper;
 import io.github.lianjishu.mapper.DishMapper;
@@ -39,8 +41,9 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * 新增分类
      *
-     * @param categoryDTO
+     * @param categoryDTO 分类信息
      */
+    @AutoFill(value = OperationType.INSERT)
     public void save(CategoryDTO categoryDTO) {
         Category category = new Category();
         //属性拷贝
@@ -102,6 +105,7 @@ public class CategoryServiceImpl implements CategoryService {
      *
      * @param categoryDTO 分类信息
      */
+    @AutoFill(value = OperationType.UPDATE)
     public void update(CategoryDTO categoryDTO) {
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO, category);
