@@ -2,7 +2,6 @@ package io.github.lianjishu.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import io.github.lianjishu.annotation.AutoFill;
 import io.github.lianjishu.constant.MessageConstant;
 import io.github.lianjishu.constant.PasswordConstant;
 import io.github.lianjishu.constant.StatusConstant;
@@ -10,7 +9,6 @@ import io.github.lianjishu.dto.EmployeeDTO;
 import io.github.lianjishu.dto.EmployeeLoginDTO;
 import io.github.lianjishu.dto.EmployeePageQueryDTO;
 import io.github.lianjishu.entity.Employee;
-import io.github.lianjishu.enumeration.OperationType;
 import io.github.lianjishu.exception.AccountLockedException;
 import io.github.lianjishu.exception.AccountNotFoundException;
 import io.github.lianjishu.exception.PasswordErrorException;
@@ -72,7 +70,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeDTO 员工数据传输对象
      */
     @Override
-    @AutoFill(value = OperationType.INSERT)
     public void save(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
 
@@ -145,7 +142,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeDTO 员工数据传输对象
      */
     @Override
-    @AutoFill(value = OperationType.UPDATE)
     public void update(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
