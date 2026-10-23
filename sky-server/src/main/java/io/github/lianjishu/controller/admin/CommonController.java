@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -37,7 +38,11 @@ public class CommonController {
     @PostMapping("/upload")
     public Result<String> upload(@RequestParam("file") MultipartFile file) throws IOException {
         log.info("上传文件: {}", file.getOriginalFilename());
-        String url = aliOssUtil.upload(file.getBytes(), file.getOriginalFilename());
+        String orgFilename = file.getOriginalFilename();
+        assert orgFilename != null;
+        String subString = orgFilename.substring(orgFilename.lastIndexOf("."));
+        String uuid = UUID.randomUUID().toString();
+        String url = aliOssUtil.upload(file.getBytes(), uuid + subString);
 
         return Result.success(url);
     }
