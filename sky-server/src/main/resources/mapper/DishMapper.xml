@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.github.lianjishu.mapper.DishMapper">
+
+    <!--    根据分页查询条件查询菜品列表-->
+    <select id="selectPage" resultType="io.github.lianjishu.vo.DishVO">
+        select d.id as id,
+        d.name as name,
+        d.category_id as categoryId,
+        d.price as price,
+        d.image as image,
+        d.description as description,
+        d.status as status,
+        d.update_time as updateTime,
+        c.name as categoryName
+        from dish as d
+        inner join category as c
+        on d.category_id = c.id
+        <where>
+            <if test="name != null and name != ''">
+                d.name like CONCAT('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null and categoryId != 0">
+                and d.category_id = #{categoryId}
+            </if>
+            <if test="status != null and status != 0">
+                and d.status = #{status}
+            </if>
+        </where>
+        order by d.update_time
+        desc
+    </select>
+
+    <!--    根据id查询菜品-->
+    <select id="selectById" resultType="io.github.lianjishu.vo.DishVO">
+        select d.id          as id,
+               d.name        as name,
+               d.category_id as categoryId,
+               d.price       as price,
+               d.image       as image,
+               d.description as description,
+               d.status      as status,
+               d.update_time as updateTime,
+               c.name        as categoryName
+        from dish as d
+                 join category as c on d.category_id = c.id
+        where d.id = #{id}
+        limit 1
+    </select>
+
+    <!--    -->
+    <select id="selectByCategoryId" resultType="io.github.lianjishu.entity.Dish">
+        select id,
+               name,
+               category_id,
+               price,
+               image,
+               description,
+               status,
+               create_time,
+               update_time,
+               create_user,
+               update_user
+        from dish
+        where category_id = #{categoryId}
+    </select>
+
+    <!--   根据id更新菜品信息 -->
+    <update id="update">
+        update dish
+        <set>
+            <if test="name!=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="categoryId!=null">
+                category_id = #{categoryId},
+            </if>
+            <if test="price!=null">
+                price = #{price},
+            </if>
+            <if test="description!=null">
+                description = #{description},
+            </if>
+            <if test="image!=null and image!=''">
+                image = #{image},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--    -->
+    <delete id="deleteByIds">
+        delete
+        from dish
+        where id in
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="io.github.lianjishu.mapper.DishFlavorMapper">
+
+    <!--    插入菜品口味信息-->
+    <insert id="insertBatch">
+        insert into dish_flavor(id, dish_id, name, value)
+        values
+        <foreach collection='dishFlavors' item='item' separator=','>
+            (#{item.id}, #{item.dishId}, #{item.name}, #{item.value})
+        </foreach>
+    </insert>
+
+    <!--    根据id查询菜品口味信息-->
+    <select id="selectById" resultType="io.github.lianjishu.entity.DishFlavor">
+        select id,
+               dish_id,
+               name,
+               value
+        from dish_flavor
+        where dish_id = #{id}
+    </select>
+
+    <!-- -->
+    <delete id="deleteByDishIds">
+        delete
+        from dish_flavor
+        where dish_id in
+        <foreach collection="dishIds" item="dishId" separator="," open="(" close=")">
+            #{dishId}
+        </foreach>
+    </delete>
+
+</mapper>
