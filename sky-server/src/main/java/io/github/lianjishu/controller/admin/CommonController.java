@@ -21,7 +21,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/admin/common")
-@Api("通用接口")
+@Api(tags="通用接口")
 public class CommonController {
 
     private final AliOssUtil aliOssUtil; // 阿里云OSS工具类，用于文件上传
