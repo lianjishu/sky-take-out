@@ -68,10 +68,19 @@ public interface DishMapper {
     List<Dish> selectByCategoryId(Long categoryId);
 
     /**
+     * 根据id更新菜品状态
      *
-     * @param id
-     * @param status
+     * @param id     菜品id
+     * @param status 菜品状态
      */
     @Update("update dish set status=#{status} where id=#{id}")
     void updateStatus(Long id, Integer status);
+
+    /**
+     * 根据菜品信息查询菜品列表
+     *
+     * @param dish 菜品信息
+     * @return 菜品列表
+     */
+    List<Dish> list(Dish dish);
 }

@@ -5,15 +5,15 @@
 
     <!--    根据分页查询条件查询套餐列表（关联分类表取出分类名称）-->
     <select id="pageQuery" resultType="io.github.lianjishu.vo.SetmealVO">
-        select s.id          as id,
-               s.category_id as categoryId,
-               s.name        as name,
-               s.price       as price,
-               s.status      as status,
-               s.description as description,
-               s.image       as image,
-               s.update_time as updateTime,
-               c.name        as categoryName
+        select s.id as id,
+        s.category_id as categoryId,
+        s.name as name,
+        s.price as price,
+        s.status as status,
+        s.description as description,
+        s.image as image,
+        s.update_time as updateTime,
+        c.name as categoryName
         from setmeal as s
         inner join category as c
         on s.category_id = c.id
@@ -79,4 +79,19 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="list" parameterType="Setmeal" resultType="Setmeal">
+        select * from setmeal
+        <where>
+            <if test="name != null">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

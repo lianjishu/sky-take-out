@@ -66,6 +66,29 @@
         where category_id = #{categoryId}
     </select>
 
+    <select id="list" resultType="io.github.lianjishu.entity.Dish">
+        select id,
+               name,
+               category_id,
+               price,
+               image,
+               description,
+               status,
+               create_time,
+               update_time,
+               create_user,
+               update_user
+        from dish
+        <where>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
     <!--   根据id更新菜品信息 -->
     <update id="update">
         update dish

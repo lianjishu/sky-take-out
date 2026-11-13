@@ -4,6 +4,7 @@ import io.github.lianjishu.annotation.AutoFill;
 import io.github.lianjishu.dto.SetmealPageQueryDTO;
 import io.github.lianjishu.entity.Setmeal;
 import io.github.lianjishu.enumeration.OperationType;
+import io.github.lianjishu.vo.DishItemVO;
 import io.github.lianjishu.vo.SetmealVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -57,4 +58,23 @@ public interface SetmealMapper {
      */
     @AutoFill(OperationType.UPDATE)
     void update(Setmeal setmeal);
+
+    /**
+     * 动态条件查询套餐
+     *
+     * @param setmeal
+     * @return
+     */
+    List<Setmeal> list(Setmeal setmeal);
+
+    /**
+     * 根据套餐id查询菜品选项
+     *
+     * @param setmealId
+     * @return
+     */
+    @Select("select sd.name, sd.copies, d.image, d.description " +
+            "from setmeal_dish sd left join dish d on sd.dish_id = d.id " +
+            "where sd.setmeal_id = #{setmealId}")
+    List<DishItemVO> getDishItemBySetmealId(Long setmealId);
 }
