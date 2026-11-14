@@ -27,7 +27,7 @@ public class DishController {
     private final DishService dishService;
 
     @Autowired
-    public DishController(RedisTemplate redisTemplate, DishService dishService) {
+    public DishController(RedisTemplate<String, Object> redisTemplate, DishService dishService) {
         this.redisTemplate = redisTemplate;
         this.dishService = dishService;
     }
@@ -149,6 +149,7 @@ public class DishController {
      *
      * @param pattern 匹配的key的前缀
      */
+    // TODO keys 是 O(N) 全库扫描，数据量大时会阻塞 Redis 单线程；改用 SCAN 游标分批删，或维护一个 dish 前缀的 Set 索引按需删
     private void cleanCache(String pattern) {
         Set<String> keys = redisTemplate.keys(pattern);
         redisTemplate.delete(keys);
