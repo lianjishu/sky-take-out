@@ -40,6 +40,7 @@ public interface SetmealService {
 
     /**
      * 条件查询
+     *
      * @param setmeal
      * @return
      */
@@ -47,8 +48,21 @@ public interface SetmealService {
 
     /**
      * 根据id查询菜品选项
+     *
      * @param id
      * @return
      */
     List<DishItemVO> getDishItemById(Long id);
+
+    /**
+     * 批量删除套餐
+     */
+    void deleteBatch(List<Long> ids);
+
+    /**
+     * 套餐起售停售
+     * @param status
+     * @param id
+     */
+    void startOrStop(Integer status, Long id);
 }

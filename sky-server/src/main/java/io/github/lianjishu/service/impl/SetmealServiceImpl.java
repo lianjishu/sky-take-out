@@ -113,6 +113,7 @@ public class SetmealServiceImpl implements SetmealService {
 
     /**
      * 条件查询
+     *
      * @param setmeal
      * @return
      */
@@ -123,6 +124,7 @@ public class SetmealServiceImpl implements SetmealService {
 
     /**
      * 根据id查询菜品选项
+     *
      * @param id
      * @return
      */
@@ -130,4 +132,18 @@ public class SetmealServiceImpl implements SetmealService {
         return setmealMapper.getDishItemBySetmealId(id);
     }
 
+    /**
+     *
+     *
+     * @param ids
+     */
+    @Override
+    public void deleteBatch(List<Long> ids) {
+        setmealDishMapper.batchDelete(ids);
+    }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        setmealDishMapper.setStatus(status, id);
+    }
 }

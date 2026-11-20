@@ -1,6 +1,7 @@
 package io.github.lianjishu.controller.user;
 
 import io.github.lianjishu.constant.StatusConstant;
+import io.github.lianjishu.dto.SetmealDTO;
 import io.github.lianjishu.entity.Setmeal;
 import io.github.lianjishu.result.Result;
 import io.github.lianjishu.service.SetmealService;
@@ -8,10 +9,8 @@ import io.github.lianjishu.vo.DishItemVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +33,7 @@ public class SetmealController {
      * @return
      */
     @GetMapping("/list")
+    @Cacheable(value = "setmealCache", key = "#categoryId") //key: setmealCache::100
     @ApiOperation("根据分类id查询套餐")
     public Result<List<Setmeal>> list(Long categoryId) {
         Setmeal setmeal = new Setmeal();

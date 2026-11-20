@@ -3,6 +3,7 @@ package io.github.lianjishu.mapper;
 import io.github.lianjishu.entity.SetmealDish;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -32,4 +33,17 @@ public interface SetmealDishMapper {
      */
     @Delete("delete from setmeal_dish where setmeal_id = #{id}")
     void deleteBySetmealId(Long id);
+
+    /**
+     * @param status
+     * @param id
+     */
+    @Update("update setmeal set status=#{status} where id=#{id}")
+    void setStatus(Integer status, Long id);
+
+    /**
+     *
+     * @param ids
+     */
+    void batchDelete(List<Long> ids);
 }
