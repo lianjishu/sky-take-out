@@ -22,4 +22,9 @@
         where openid = #{openid}
         limit 1
     </select>
+    <select id="getById" resultType="io.github.lianjishu.entity.User">
+        select *
+        from user
+        where id = #{id}
+    </select>
 </mapper>

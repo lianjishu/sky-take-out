@@ -45,8 +45,8 @@ public class DishController {
         dishService.save(dishDTO);
 
         //清理缓存数据
-        String key = "dish_" + dishDTO.getCategoryId();
-        cleanCache(key);
+        //dish_<categoryId>: 用户端手动写入的key；dishCache::<categoryId>: 用户端 @Cacheable 写入的key
+        cleanCache("dish_" + dishDTO.getCategoryId(), "dishCache::" + dishDTO.getCategoryId());
 
         return Result.success();
     }
@@ -103,8 +103,8 @@ public class DishController {
         log.info("修改菜品信息: {}", dishDTO);
         dishService.update(dishDTO);
 
-        //将所有的菜品缓存数据清理掉，所有以dish_开头的key
-        cleanCache("dish_*");
+        //将所有的菜品缓存数据清理掉，dish_* 与 dishCache::* 两种key都要清
+        cleanCache("dish_*", "dishCache::*");
 
         return Result.success();
     }
@@ -120,8 +120,8 @@ public class DishController {
         log.info("根据ids删除菜品: {}", ids);
         dishService.deleteByIds(ids);
 
-        //将所有的菜品缓存数据清理掉，所有以dish_开头的key
-        cleanCache("dish_*");
+        //将所有的菜品缓存数据清理掉，dish_* 与 dishCache::* 两种key都要清
+        cleanCache("dish_*", "dishCache::*");
 
         return Result.success();
     }
@@ -138,8 +138,8 @@ public class DishController {
         log.info("修改菜品状态: id={}, status={}", id, status);
         dishService.startOrStop(id, status);
 
-        //将所有的菜品缓存数据清理掉，所有以dish_开头的key
-        cleanCache("dish_*");
+        //将所有的菜品缓存数据清理掉，dish_* 与 dishCache::* 两种key都要清
+        cleanCache("dish_*", "dishCache::*");
 
         return Result.success();
     }
@@ -147,12 +147,16 @@ public class DishController {
     /**
      * 抽取清理缓存的方法：根据key的前缀进行清理
      *
-     * @param pattern 匹配的key的前缀
+     * @param patterns 匹配的key的前缀
      */
     // TODO keys 是 O(N) 全库扫描，数据量大时会阻塞 Redis 单线程；改用 SCAN 游标分批删，或维护一个 dish 前缀的 Set 索引按需删
-    private void cleanCache(String pattern) {
-        Set<String> keys = redisTemplate.keys(pattern);
-        redisTemplate.delete(keys);
+    private void cleanCache(String... patterns) {
+        for (String pattern : patterns) {
+            Set<String> keys = redisTemplate.keys(pattern);
+            if (keys != null && !keys.isEmpty()) {
+                redisTemplate.delete(keys);
+            }
+        }
     }
 
 }

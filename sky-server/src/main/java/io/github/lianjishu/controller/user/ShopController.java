@@ -1,7 +1,9 @@
 package io.github.lianjishu.controller.user;
 
+import io.github.lianjishu.dto.ShoppingCartDTO;
 import io.github.lianjishu.result.Result;
 import io.github.lianjishu.service.ShopService;
+import io.github.lianjishu.service.ShoppingCartService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,7 @@ public class ShopController {
     private final ShopService shopService;
 
     @Autowired
-    public ShopController(ShopService shopService) {
+    public ShopController(ShopService shopService, ShoppingCartService shoppingCartService) {
         this.shopService = shopService;
     }
 

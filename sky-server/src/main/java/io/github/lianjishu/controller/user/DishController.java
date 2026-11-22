@@ -32,7 +32,6 @@ public class DishController {
         this.redisTemplate = redisTemplate;
     }
 
-
     /**
      * 根据分类id查询菜品
      *
